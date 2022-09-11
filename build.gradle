@@ -13,7 +13,14 @@ repositories {
 }
 
 dependencies {
+    implementation 'io.netty:netty-tcnative-boringssl-static:2.0.20.Final'
+    implementation 'io.grpc:grpc-netty:1.19.0'
+    implementation 'io.netty:netty-handler:4.1.32.Final'
+    implementation 'com.owlike:genson:1.5'
     implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'com.google.guava:guava:29.0-jre'
+    implementation 'org.hyperledger.fabric:fabric-gateway-java:2.1.1'
+    annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
