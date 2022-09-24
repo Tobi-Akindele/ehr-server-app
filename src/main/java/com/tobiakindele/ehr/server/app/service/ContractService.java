@@ -18,7 +18,7 @@ public final class ContractService {
 
     private final static Logger logger = LoggerFactory.getLogger(EhrServerAppApplication.class);
 
-    public Object invokeTransaction(String transaction, TransactionType transactionType)
+    public Object invokeTransaction(String contractName, TransactionType transactionType)
             throws ContractException, InterruptedException, TimeoutException {
 
         Object response;
@@ -31,10 +31,10 @@ public final class ContractService {
 
             switch (transactionType) {
                 case SUBMIT:
-                    response = contract.submitTransaction(transaction);
+                    response = contract.submitTransaction(contractName);
                     break;
                 case EVALUATE:
-                    response = contract.evaluateTransaction(transaction);
+                    response = contract.evaluateTransaction(contractName);
                     break;
                 default:
                     //do nothing
@@ -48,7 +48,7 @@ public final class ContractService {
         return response;
     }
 
-    public Object invokeTransaction(String transaction, TransactionType transactionType, String payload)
+    public Object invokeTransaction(String contractName, TransactionType transactionType, String payload)
             throws ContractException, InterruptedException, TimeoutException {
 
         Object response;
@@ -61,15 +61,36 @@ public final class ContractService {
 
             switch (transactionType) {
                 case SUBMIT:
-                    response = contract.submitTransaction(transaction, payload);
+                    response = contract.submitTransaction(contractName, payload);
                     break;
                 case EVALUATE:
-                    response = contract.evaluateTransaction(transaction,payload);
+                    response = contract.evaluateTransaction(contractName,payload);
                     break;
                 default:
                     //do nothing
                     response = null;
             }
+        } catch (Exception e) {
+            logger.error("[-] Error occurred: ", e);
+            throw e;
+        }
+
+        return response;
+    }
+
+    public Object invokeTransaction(String contractName, String[] pageInfo)
+            throws ContractException {
+
+        Object response;
+
+        try (Gateway gateway = GatewayConnection.connect()) {
+
+            // get the network and contract
+            Network network = gateway.getNetwork("mychannel");
+            Contract contract = network.getContract("ehr");
+
+            response = contract.evaluateTransaction(contractName, pageInfo);
+
         } catch (Exception e) {
             logger.error("[-] Error occurred: ", e);
             throw e;

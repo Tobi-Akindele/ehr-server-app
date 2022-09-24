@@ -23,8 +23,8 @@ public class EhrServerAppApplication {
         EnrollAdmin.init();
         RegisterUser.init();
 
-        logger.info("Submit Transaction: InitLedger creates the initial set of assets on the ledger.");
-        new ContractService().invokeTransaction("InitLedger", TransactionType.SUBMIT);
+//        logger.info("Submit Transaction: InitLedger creates the initial set of assets on the ledger.");
+//        new ContractService().invokeTransaction("InitLedger", TransactionType.SUBMIT);
 
         SpringApplication.run(EhrServerAppApplication.class, args);
     }
