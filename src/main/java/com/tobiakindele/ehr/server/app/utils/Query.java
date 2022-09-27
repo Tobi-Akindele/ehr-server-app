@@ -9,6 +9,7 @@ public class Query{
     private List<String> fields;
     private String bookmark;
     private int limit;
+    private int skip;
 
     public Selector getSelector() {
         return selector;
@@ -40,6 +41,14 @@ public class Query{
 
     public void setLimit(int limit) {
         this.limit = limit;
+    }
+
+    public int getSkip() {
+        return skip;
+    }
+
+    public void setSkip(int skip) {
+        this.skip = skip;
     }
 
     public static class Not{
