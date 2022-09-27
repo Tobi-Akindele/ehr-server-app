@@ -50,7 +50,7 @@ public class ContractController {
                 "name",
                 "fileName",
                 "fileType",
-                "size"));
+                "size", "createdAt"));
         query.setBookmark("");
         query.setSkip(skip);
         query.setLimit(Integer.parseInt(pageSize));
