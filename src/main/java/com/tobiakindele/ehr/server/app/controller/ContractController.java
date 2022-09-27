@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import javax.json.JsonObject;
 import java.util.List;
 import java.util.concurrent.TimeoutException;
 
@@ -38,9 +39,9 @@ public class ContractController {
     @GetMapping(value = "/ehrdata/page", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public Object getAllEHRData(
-            @RequestHeader(name = "bookmark", defaultValue = "") String bookmark,
-            @RequestHeader(name = "pageSize", defaultValue = "10") String pageSize)
-            throws ContractException, InterruptedException, TimeoutException, JsonProcessingException {
+            @RequestParam(name = "skip", defaultValue = "0") int skip,
+            @RequestParam(name = "pageSize", defaultValue = "10") String pageSize)
+            throws ContractException, JsonProcessingException {
 
         Query query = new Query();
         query.setSelector(new Query.Selector(new Query.Not(null)));
@@ -50,14 +51,15 @@ public class ContractController {
                 "fileName",
                 "fileType",
                 "size"));
-        query.setBookmark(bookmark);
+        query.setBookmark("");
+        query.setSkip(skip);
         query.setLimit(Integer.parseInt(pageSize));
         String queryString = objectMapper.writeValueAsString(query);
 
         logger.info(String.format("[+] Query: %s", queryString));
 
         return contractService.invokeTransaction("GetPaginatedEHRData",
-                new String[]{queryString, pageSize, bookmark});
+                new String[]{queryString, pageSize, ""});
     }
 
     @GetMapping(value = "/ehrdata/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
